@@ -9,22 +9,22 @@ function count(){
 function countNiceStrings(str){
   var lines = str.split('\n'),line,
       forbiddenStr = ['ab','cd','pq','xy'],
-      containsForbidden =false;     
+      containsForbidden = false;     
       res = 0;
 
   for(var i=0; i<lines.length; i++){
     line = lines[i];
-    vowels=0;
+    vowels = 0;
     doubleLeter = false;
 
-    containsForbidden = forbiddenStr.indexOf(line.toLowerCase()) !== -1;
+    containsForbidden = containsSubstringArr(line, forbiddenStr);
    
     if(containsForbidden){
       containsForbidden = false;     
       continue;
     }
 
-     if(countVowels(line) < 3){
+    if(countVowels(line) < 3){
         continue;
     }   
     for(var j=0; j<line.length; j++){           
@@ -35,6 +35,17 @@ function countNiceStrings(str){
     }
   }  
   return res;
+}
+
+function containsSubstringArr(str, arr){
+  var substring;
+  for (var i = 0; i != arr.length; i++) {
+    substring = arr[i];
+    if (str.indexOf(substring) != - 1) {
+             return true;
+    }
+  }
+  return false; 
 }
 
 function countVowels(str) {
