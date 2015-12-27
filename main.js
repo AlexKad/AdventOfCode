@@ -1,4 +1,62 @@
+//day 6 
+function lightUp(){
+  var line,
+      lights = initArray(1000, 1000),
+      instructions = $('#input').val().split('\n');
+  for(var i=0; i<instructions.length; i++){
+    line = instructions[i].split(' ');
+    switch(line[0]){
+      case 'turn':
+        if(line[1]==='on'){
+            lights = turnLight(lights, line[2],line[4],true)
+        }
+        if(line[1]==='off'){
+          lights = turnLight(lights, line[2], line[4],false)
+        }
+        break;
+        case 'toggle':
+          lights = turnLight(lights, line[1], line[3]);
+          break;
+    }
+  }
+  var res = countLights(lights);
+  $("#res").text("Result is " + res);
+}
 
+function initArray(rows,columns){
+  var arr = new Array(rows);
+   for (var i = 0; i < rows; i++) {
+       arr[i] = new Array(columns);
+   }
+   return arr;
+}
+
+function turnLight(arr, from, to, flag){
+  var from = {x:from.split(',')[0], y:from.split(',')[1]};
+  var to = {x:to.split(',')[0], y:to.split(',')[1]};
+  for(var i=from.x; i<=to.x; i++){
+    for(var j=from.y; j<=to.y; j++){
+      if(flag === true) {arr[i][j]= true; continue};
+      if(flag === false) {arr[i][j]= false; continue};
+      if(flag === undefined){
+          arr[i][j] =arr[i][j]===undefined? true: !arr[i][j]; 
+          continue }
+    }
+  }
+  return arr;
+}
+
+function countLights(lights){
+  var res = 0;
+  for(i=0; i<1000; i++){
+    for(var j=0; j<1000; j++){
+      if(lights[i][j]=== true) res++;
+    }
+  }
+  return res;
+}
+
+//day 5
 function count(){
   var text = $('#input').val();
   var res = countNiceStrings(text);
