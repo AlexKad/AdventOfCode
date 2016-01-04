@@ -3,19 +3,20 @@ function lightUp(){
   var line,
       lights = initArray(1000, 1000),
       instructions = $('#input').val().split('\n');
+
   for(var i=0; i<instructions.length; i++){
     line = instructions[i].split(' ');
     switch(line[0]){
       case 'turn':
         if(line[1]==='on'){
-            lights = turnLight(lights, line[2],line[4],true)
+           turnLight(lights, line[2], line[4], true);
         }
         if(line[1]==='off'){
-          lights = turnLight(lights, line[2], line[4],false)
+           turnLight(lights, line[2], line[4], false);
         }
         break;
         case 'toggle':
-          lights = turnLight(lights, line[1], line[3]);
+          turnLight(lights, line[1], line[3]);
           break;
     }
   }
@@ -28,29 +29,39 @@ function initArray(rows,columns){
    for (var i = 0; i < rows; i++) {
        arr[i] = new Array(columns);
    }
+   for(var i=0; i<rows; i++){
+      for(var j=0; j<columns; j++){
+        arr[i][j] = false;
+      }
+   }
    return arr;
 }
 
-function turnLight(arr, from, to, flag){
-  var from = {x:from.split(',')[0], y:from.split(',')[1]};
-  var to = {x:to.split(',')[0], y:to.split(',')[1]};
-  for(var i=from.x; i<=to.x; i++){
-    for(var j=from.y; j<=to.y; j++){
-      if(flag === true) {arr[i][j]= true; continue};
-      if(flag === false) {arr[i][j]= false; continue};
+function turnLight(arr, fr, t, flag){
+  var count = 0;
+  var from = { x:Math.min(fr.split(',')[0], t.split(',')[0]),
+               y:Math.min(fr.split(',')[1], t.split(',')[1])};
+
+  var to = { x:Math.max(fr.split(',')[0], t.split(',')[0]),
+             y:Math.max(fr.split(',')[1], t.split(',')[1])};
+
+  for(var x=from.x; x<=to.x; x++){
+    for(var y=from.y; y<=to.y; y++){
       if(flag === undefined){
-          arr[i][j] =arr[i][j]===undefined? true: !arr[i][j]; 
-          continue }
+        arr[x][y] = arr[x][y]===undefined? true: !arr[x][y];
+      }
+      else{
+         arr[x][y]= flag;
+      }
     }
-  }
-  return arr;
+  }  
 }
 
 function countLights(lights){
   var res = 0;
   for(i=0; i<1000; i++){
     for(var j=0; j<1000; j++){
-      if(lights[i][j]=== true) res++;
+      if(lights[i][j]=== true) ++res;
     }
   }
   return res;
