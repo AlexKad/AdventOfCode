@@ -35,10 +35,6 @@ function applyCommand(arr, command) {
           break;
       }
     }    
-  }
-  console.log(command.action + " " +arr.reduce(function(count, row){
-      var currentRowCount = row.filter(function(el){return el===true;}).length; 
-      return count + currentRowCount;
-    },0));
+  } 
   return arr;
 }
