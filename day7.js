@@ -1,19 +1,28 @@
 function createSchema(){
 	var input = $('#input').val().split('\n');
-	var schema = new Schema(input);
-	//schema.setSignals(input);
+	var schema = new Schema();
+	schema.readInput(input);
 	var res = schema.getSignal('a');
 	$("#res").text("Result is " + res);
+
+	schema.resetSignals();
+	var newInput = $('#input').val().split('\n');
+	schema.readInput(newInput);
+	$("#res").text("Result is " + res+ '\n'+ 'New signal ' + schema.getSignal('a'));
 }
 
-function Schema (input) {
-	this.input = input;
+function Schema () {
+	this.input = [];
 	this.signals = [];	
+}
+
+Schema.prototype.readInput = function(input) {
+	this.input = input;
 	while(!this.setSignals()){
 		this.setSignals();
-		console.log(input.length);
+		//console.log(input.length);
 	}
-}
+};
 
 Schema.prototype.setSignals = function(){
 	var line, operator, target, formula, signal;
@@ -50,8 +59,7 @@ Schema.prototype.setSignal = function(formula, operator){
 		else {
 		    res = this.signals[formula];
 		}
-	}
-	
+	}	
 	return res;
 }
 
@@ -61,6 +69,15 @@ Schema.prototype.getSignal = function(target){
 
 Schema.prototype.getSignals = function(){	
 	return this.signals;
+}
+
+Schema.prototype.resetSignals = function(){	
+	var me = this;
+	Object.keys(me.signals).forEach(function(key) {
+		me.signals[key] = undefined;
+	});
+	this.signals['a'] = 956;
+	this.signals['b'] = 956;
 }
 
 Schema.prototype.operate = function(formula, operator){
