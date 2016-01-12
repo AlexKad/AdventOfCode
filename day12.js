@@ -21,9 +21,19 @@ function countSum(obj){
 	}	
 
 	if(typeof(obj) === 'object'){
-		sum = Object.keys(obj).reduce(function(sum, el){			
-			return sum + countSum(obj[el]); 
-		}, 0);
+		if(!isRedObject(obj)) { //condition for second part of task
+			sum = Object.keys(obj).reduce(function(sum, el){			
+				return sum + countSum(obj[el]);				
+		   }, 0);
+		}		
 	}
 	return sum;
+}
+
+function isRedObject(obj){
+	var keys = Object.keys(obj);
+	for(var i=0; i<keys.length; i++){
+		if(obj[keys[i]] === 'red') return true;
+	}	
+	return false;
 }
