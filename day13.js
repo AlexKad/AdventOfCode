@@ -3,7 +3,7 @@ function fillTable(){
 
   var guests = getNames(input);
   var possibleRoutes = getPermutationsFromGuests(guests);
-  countDistance(possibleRoutes, guests);
+  countHappiness(possibleRoutes, guests);
 
   console.log(renderAllDistances(possibleRoutes));
   //var res = getMinimumRoute(possibleRoutes);  //first part
@@ -33,15 +33,20 @@ function getPermutationsFromGuests(guests){
   return permutate(names);
 }
 
-function countDistance(possibleRoutes, guests){
-  var names;
+function countHappiness(possibleRoutes, guests){
+  var leftguest, rightguest, currHapp = 0;
   possibleRoutes.forEach(function(el){
-    name = null;
+    leftguest = null;
+    rightguest = null;
+    currHapp = 0;
     el.happiness = 0;
-   for(var i=0; i<el.length-1;i++){
-    names = _.findWhere(guests, {from:el[i], to:el[i+1]});    
-    if(!names) return 0;
-    el.happiness = el.happiness + parseInt(names.value);
+
+   for(var i=0; i<el.length;i++){
+     leftguest = _.findWhere(guests, {from:el[i], to:el[i>0? i-1: el.length-1]});
+     rightguest = _.findWhere(guests, {from:el[i], to:el[i == el.length-1? 0: i+1]});
+    if(!leftguest || !rightguest) return 0;
+    currHapp = parseInt(leftguest.value) + parseInt(rightguest.value);
+    el.happiness = el.happiness + currHapp;
    }
  });
 }
@@ -80,5 +85,5 @@ function renderAllDistances(possibleRoutes){
   return  possibleRoutes.reduce(function(str, el){
    return str + el.reduce(function(st, name) { 
     return st + ' -> ' + name; }, "") 
-     + " = " + el.happiness ; },'');
+     + " = " + el.happiness +"\n"; },'');
 }
