@@ -3,9 +3,11 @@ function findBestReindeer(){
 	var time = 2503;
 
 	var deers = createDeersFromInput(input);
-	var winnerDeer = _.max(deers, function(deer){ return deer.res = deer.countDistanceAtTime(time) });
+	//part 1
+	//var winnerDeer = _.max(deers, function(deer){ return deer.res = deer.countDistanceAtTime(time) });
 
-	//var res = raceForTime(deers, time);
+	//part 2
+	var winnerDeer = raceForTime(deers, time);
 	$("#res").text('The winner is '+ winnerDeer.name+ ' with result ' + winnerDeer.res);
 }
 
@@ -34,6 +36,9 @@ function Reinder(name, speed, stopAt, stopLength){
 	this.speed = speed;
 	this.stopAt = stopAt;
 	this.stopLength = stopLength;
+	//part 2
+	this.racingPoints = 0;
+	this.timeForAction = this.stopAt;
 }
 
 Reinder.prototype.countDistanceAtTime = function(time){
