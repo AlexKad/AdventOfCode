@@ -1,12 +1,12 @@
 function fillTable(){
   var input = $('#input').val().split('\n');
 
-  var guests = getNames(input);
+  var guests = createGuests(input);
+  addMe(guests);
   var possibleRoutes = getPermutationsFromGuests(guests);
   countHappiness(possibleRoutes, guests);
 
   console.log(renderAllDistances(possibleRoutes));
-  //var res = getMinimumRoute(possibleRoutes);  //first part
   var res = getMaximumRoute(possibleRoutes);
   
   $("#res").text("Result is " + res + '\n');
@@ -14,7 +14,7 @@ function fillTable(){
 }
 
 //parse input to object {from:'', to:'', value:''}
-function getNames(input){ 
+function createGuests(input){ 
   var line, parsed, guests= [],happiness = 1;
   for(var i=0; i<input.length; i++){
     line = input[i];
@@ -26,11 +26,15 @@ function getNames(input){
 }
 
 // create array of places and make permutations for them
-function getPermutationsFromGuests(guests){ 
+function getPermutationsFromGuests(guests){   
+  return permutate(getGuestsNames(guests));
+}
+
+function getGuestsNames(guests){
   var names = [];
   _.map(guests, function(el){ names.push(el.from); names.push(el.to)});
   names= _.uniq(names);
-  return permutate(names);
+  return names;
 }
 
 function countHappiness(possibleRoutes, guests){
@@ -87,3 +91,13 @@ function renderAllDistances(possibleRoutes){
     return st + ' -> ' + name; }, "") 
      + " = " + el.happiness +"\n"; },'');
 }
+
+function addMe(guests){
+  var names = getGuestsNames(guests);
+  var myName = 'Alex';
+  for(var i=0; i<names.length; i++){
+    guests.push({from:myName, to:names[i], value: 0});
+    guests.push({from:names[i], to:myName, value: 0});
+  }
+}
+
