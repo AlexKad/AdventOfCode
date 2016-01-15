@@ -1,12 +1,14 @@
 function fillTable(){
   var input = $('#input').val().split('\n');
-
   var guests = createGuests(input);
+
+  //Part 2
   addMe(guests);
+
   var possibleRoutes = getPermutationsFromGuests(guests);
   countHappiness(possibleRoutes, guests);
 
-  console.log(renderAllDistances(possibleRoutes));
+  //console.log(renderAllDistances(possibleRoutes));
   var res = getMaximumRoute(possibleRoutes);
   
   $("#res").text("Result is " + res + '\n');
