@@ -8,7 +8,7 @@ function findBestReindeer(){
 	//var winnerDeer = _.max(deers, function(deer){ return deer.distance = deer.countDistanceAtTime(time) });
 
 	//part 2
-	var winnerDeer = raceForTime(deers, testTime);
+	var winnerDeer = raceForTime(deers, time);
 
 	$("#res").text('The winner is '+ winnerDeer.name+ ' with result ' + winnerDeer.racingPoints);
 }
@@ -19,22 +19,17 @@ function createDeersFromInput (input) {
 	var deers = [], parsedLine;
 	input.forEach(function(line){
 		parsedLine = line.match(/(\D+) can fly (\d+) km\/s for (\d+) seconds, but then must rest for (\d+) seconds./);
-		deers.push(new Reinder(parsedLine[1], parsedLine[2], parsedLine[3], parsedLine[4]));
+		deers.push(new Reindeer(parsedLine[1], parsedLine[2], parsedLine[3], parsedLine[4]));
 	});
 	return deers;
 }
 
 function raceForTime(deers,time){
 	var winner;
-	for(var i=1;i<=time; i++){
-		winner = _.max(deers, function(deer){	 	
-		 if(deer.actionTime % deer.stopAt != 0 || deer.restingTime == deer.stopLength){
-		 	deer.distance = deer.distance + parseInt(deer.speed);
-		 	deer.actionTime++;
-		 	deer.restingTime=0;
-		 }
-		 else{
-		 	deer.restingTime++;
+	for(var i=0;i<time; i++){
+		winner = _.max(deers, function(deer){		
+		 if(!deer.isRestingNow(i)){
+		 	deer.distance = deer.distance + deer.speed;
 		 }
 		 return deer.distance;
 		});
@@ -44,27 +39,39 @@ function raceForTime(deers,time){
 }
 
 
-function Reinder(name, speed, stopAt, stopLength){
+function Reindeer(name, speed, runTime, restingTime){
 	this.name =  name;
-	this.speed = speed;
-	this.stopAt = stopAt;
-	this.stopLength = stopLength;
+	this.speed = parseInt(speed);
+	this.runTime = parseInt(runTime);
+	this.restingTime = parseInt(restingTime);
 	//part 2
 	this.distance = 0;
-	this.racingPoints = 0;
-	this.actionTime = 1;
-	this.restingTime = 1;
+	this.racingPoints = 0;	
 }
 
-Reinder.prototype.countDistanceAtTime = function(time){
+Reindeer.prototype.countDistanceAtTime = function(time){
 	var kms = 0;
-	while(time > this.stopAt){
-		kms = kms + this.speed*this.stopAt;
-		time= time - this.stopAt - this.stopLength;
+	while(time > this.runTime){
+		kms = kms + this.speed*this.runTime;
+		time= time - this.runTime - this.restingTime;
 	}
 	if(time>0){
 		kms = kms+ time*this.speed;
 	}
 	return kms;
+}
+
+Reindeer.prototype.isRestingNow = function(currTimeInSec){
+	var iteration = this.runTime + this.restingTime;
+	var iterationCount = Math.floor(currTimeInSec/iteration);
+
+	var time = currTimeInSec - iteration* iterationCount;
+	if(time< this.runTime){
+		return false;
+	}
+	else{
+		if(this.name=="Comet")
+		console.log(this.name+" " + this.distance);
+	} return true;
 }
 
