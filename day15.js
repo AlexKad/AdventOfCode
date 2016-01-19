@@ -3,8 +3,9 @@
 function countIngridients(){
 	var input = $('#input').val().split('\n');
 	var spoonNum = 100;
+    var neededCalories = 500;
 
-	var res = measureIngridients(input, spoonNum);	
+	var res = measureIngridients(input, spoonNum, neededCalories);	
 	
 	$('#res').text('Result is ' + res);
 }
@@ -18,9 +19,9 @@ function parseInput(input){
 	return ing;
 }
 
-function measureIngridients(input, spoonNum){
+function measureIngridients(input, spoonNum, neededCalories){
 	var ingrs = parseInput(input);
-	return findBestAmount(ingrs, spoonNum);
+	return findBestAmount(ingrs, spoonNum, neededCalories);
 }
 
 
@@ -46,7 +47,7 @@ function* measure(total, arrLength, res) {
 
 
 
-function findBestAmount(ingrs, spoonNum) {
+function findBestAmount(ingrs, spoonNum, neededCalories) {
     var max = -Infinity,
     	countedIngrs, propSum, score, calories;
 
@@ -55,6 +56,11 @@ function findBestAmount(ingrs, spoonNum) {
 		countedIngrs = ingrs.map((ingr, i) => ingr.map(prop => prop * spoonsAmount[i]));
         calories = countedIngrs.map(ingr => ingr.pop()); //exclude calories
 
+        if (neededCalories) {
+            if (neededCalories !== sum(calories)) {
+                continue;
+            }
+        }
         
         propSum = countedIngrs.reduce((sum, el) => sum.map((prop, i) => prop + el[i]));
         score = propSum.reduce((acc, propSum) => acc * Math.max(propSum, 0), 1);
