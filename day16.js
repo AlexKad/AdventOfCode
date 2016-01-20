@@ -2,7 +2,11 @@ function findAunt(){
 	var input = $('#input').val().split('\n');
 	
 	var aunts = input.map(createAunt); 
+	//part 1
 	var auntSue = aunts.filter(findSue);
+	//part2
+	var auntSue = aunts.filter(findSue_part2);
+
 	if(auntSue.length == 1){
 		$("#res").text("Aunt Sue number " + auntSue[0].number);
 	}
@@ -47,6 +51,28 @@ function findSue(aunt){
 	});
 	return !flag;
 }
+
+function findSue_part2(aunt){
+	var flag = false;
+	Object.keys(aunt).forEach(function(prop){
+		if(prop === 'number') return;//number of sue		
+		switch(prop){
+			case 'cats':
+      		case 'trees':
+                if(aunt[prop]!=undefined && aunt[prop] <= tickerTape[prop]) flag = true;
+        		break;
+            case 'pomeranians':
+            case 'goldfish':
+        		if(aunt[prop]!=undefined && aunt[prop] >= tickerTape[prop]) flag = true;
+        		break;
+      		default:
+        	 	if(aunt[prop]!=undefined && aunt[prop] != tickerTape[prop]) flag = true;
+        		break;
+    		}
+		}); 
+	return !flag;
+}
+
 
 
 
