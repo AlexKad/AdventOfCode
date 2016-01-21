@@ -13,12 +13,12 @@ function findAunt(){
 	else{
 		$("#res").text('Aunt not founded');
 	}
-	
 }
 
 var tickerTape = {
 	children:3,
 	cats: 7,
+	samoyeds: 2,
 	pomeranians: 3,
 	akitas: 0,
 	vizslas: 0,
@@ -72,6 +72,17 @@ function findSue_part2(aunt){
 		}); 
 	return !flag;
 }
+
+
+function sueFilter(sue) {
+  var fail = false;
+  Object.keys(sue).forEach( function(k){ 
+    if(k=='number')return; 
+    if(sue[k]!=undefined && sue[k] != tickerTape[k]) fail = true;
+  });
+  return !fail;
+}
+
 
 
 
