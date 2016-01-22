@@ -3,6 +3,13 @@ function fillingContainers(){
 	var liters = 150;	
 	var res = findCombinations(liters, containers.length);	
 	$('#res').text('There are '+ res+ ' combinations');
+
+	//Part 2
+	var i = 1, result;
+	while (!result) {
+	    result = findCombinations(liters, i++);
+	}
+	$('#res').text('There are '+ result+ ' combinations');
 }
 
 var containers;
