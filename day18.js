@@ -32,7 +32,7 @@ function iterate(arr, iteration){
 		for(var a=0; a<arr.length;a++){
 			for(var b=0; b<arr.length; b++){
 				newArr[a] = newArr[a].substr(0, b) + countState(a,b, arr) + newArr[a].substr(b+ 1);				
-				if(i==iteration-1 && arr[a][b] == '#') sum++;
+				if(i==iteration-1 && newArr[a][b] == '#') sum++;
 			}
 		}
 		arr = newArr.slice(0);
