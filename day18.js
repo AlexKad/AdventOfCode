@@ -1,6 +1,6 @@
 function turnLights(){
 	var input = $('#input').val().split('\n');
-	var iteration = 4;
+	var iteration = 100;
 
 	var res = iterate(input, iteration);	
 	$('#res').text("There are " + res + " lights turn on.");
@@ -31,14 +31,15 @@ function countState(i,j, arr){
 
 function iterate(arr, iteration){
 	var sum = 0;
+	var newArr = arr.slice(0);
 	for(var i=0; i<iteration; i++){
 		for(var a=0; a<arr.length;a++){
 			for(var b=0; b<arr.length; b++){
-				arr[a] = arr[a].substr(0, b) + countState(a,b, arr) + arr[a].substr(b+ 1);
-				//arr[a][b] = countState(a,b, arr);
+				newArr[a] = newArr[a].substr(0, b) + countState(a,b, arr) + newArr[a].substr(b+ 1);				
 				if(i==iteration-1 && arr[a][b] == '#') sum++;
 			}
 		}
+		arr = newArr.slice(0);
 		console.log(arr.reduce(function(sum, el){return sum+el+'\n';},""));		
 	}
 	return sum;
