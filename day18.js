@@ -9,14 +9,10 @@ function turnLights(){
 function countState(i,j, arr){
 	var currentState = arr[i][j];
 	var flag = 0;
-	var startStateX = i-1<0 ? i: i-1;
-	var endStateX = (i+1)<arr.length ? i+1 : i;
-	var startStateY = j-1<0 ? j : j-1;
-	var endStateY = (j+1)<arr.length ? j+1 : j;
-
-	for(var k=startStateX; k <= endStateX; k++){
-		for(var m=startStateY; m <= endStateY; m++){
-			if(k==i && m == j) continue;
+	
+	for(var k=i-1; k <= i+1; k++){
+		for(var m=j-1; m <= j+1; m++){
+			if(k==i && m == j || arr[k]==undefined) continue;
 			else{
 				if(currentState == '#' && arr[k][m] == "#") flag++;
 				else if(currentState == "." && arr[k][m] == "#") flag++;
