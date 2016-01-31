@@ -9,7 +9,16 @@ function turnLights(){
 function countState(i,j, arr){
 	var currentState = arr[i][j];
 	var flag = 0;
+
+	//part 2 corners always turned on
+	if(i == 0 && j==0 ||
+		i==0 && j==arr.length-1 ||
+		i==arr.length-1 && j==0 ||
+		i==arr.length-1 && j==arr.length-1){
+			return '#';
+	}
 	
+	//part 1
 	for(var k=i-1; k <= i+1; k++){
 		for(var m=j-1; m <= j+1; m++){
 			if(k==i && m == j || arr[k]==undefined) continue;
